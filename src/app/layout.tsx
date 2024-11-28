@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { CssBaseline } from "@mui/material";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { CacheRtl } from "@/components/Utils/CacheRtl";
+import { ThemeProviderWrapper } from "@/components/Utils/ThemeProviderWrapper";
+import { SidebarMenu } from "@/components/Utils/SidebarMenu";
+import { menuList } from "@/menu";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,9 +30,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" dir="rtl">
+      <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <AppRouterCacheProvider>
+          <ThemeProviderWrapper>
+            <CacheRtl>
+              <CssBaseline enableColorScheme />
+              <SidebarMenu menuList={menuList} />
+              {children}
+            </CacheRtl>
+          </ThemeProviderWrapper>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
