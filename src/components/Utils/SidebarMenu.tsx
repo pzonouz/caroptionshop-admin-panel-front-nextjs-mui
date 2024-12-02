@@ -1,69 +1,5 @@
 "use client";
 
-// import React, { useState } from "react";
-// import List from "@mui/material/List";
-// import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import ListItemText from "@mui/material/ListItemText";
-// import Collapse from "@mui/material/Collapse";
-// import ExpandLess from "@mui/icons-material/ExpandLess";
-// import ExpandMore from "@mui/icons-material/ExpandMore";
-//
-// const RecursiveMenuItem = ({ menu }: { menu: any }) => {
-//   if (!menu) return null;
-//   const [open, setOpen] = useState(false);
-//   const handleClick = (id: any) => {
-//     open ? setOpen(false) : setOpen(id);
-//   };
-//
-//   if (menu.type === "group") {
-//     return (
-//       <React.Fragment key={menu?.id}>
-//         <ListItemButton onClick={() => handleClick(menu.id)}>
-//           <ListItemIcon>{<menu.icon />}</ListItemIcon>
-//           <ListItemText primary={menu.title} />
-//           {open ? <ExpandLess /> : <ExpandMore />}
-//         </ListItemButton>
-//         <Collapse
-//           in={open}
-//           timeout="auto"
-//           unmountOnExit
-//           // timeout={1000}
-//           // style={{
-//           //   transition: "height 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-//           // }}
-//         >
-//           <List sx={{ pl: 2 }}>
-//             {menu?.children?.map((child: any) => (
-//               <RecursiveMenuItem key={child?.id!} menu={child} />
-//             ))}
-//           </List>
-//         </Collapse>
-//       </React.Fragment>
-//     );
-//   } else if (menu.type === "item") {
-//     return (
-//       <ListItemButton key={menu.id} sx={{ pl: 2 }}>
-//         <ListItemIcon>{<menu.icon />}</ListItemIcon>
-//         <ListItemText primary={menu.title} />
-//       </ListItemButton>
-//     );
-//   }
-//
-//   return null;
-// };
-//
-// const SidebarMenu = ({ menuList }: { menuList: any }) => {
-//   return (
-//     <List>
-//       {menuList.map((menu: any) => (
-//         <RecursiveMenuItem key={menu.id} menu={menu} />
-//       ))}
-//     </List>
-//   );
-// };
-//
-// export { SidebarMenu };
 // WARN:ChatGpt
 // Add Font and customise menu looks
 import React, { useState } from "react";
@@ -73,19 +9,24 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
+  Box,
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const RecursiveMenuItem = ({
   menu,
   openMenus,
   toggleMenu,
   parentId,
+  path,
 }: {
   menu: any;
   openMenus: Record<string, string | null>;
   toggleMenu: (parentId: string | null, id: string) => void;
   parentId: string | null;
+  path: string | null;
 }) => {
   if (!menu) return null;
 
@@ -97,11 +38,58 @@ const RecursiveMenuItem = ({
 
   if (menu.type === "group") {
     return (
-      <React.Fragment key={menu.id}>
+      <Box
+        sx={[
+          {
+            fontFamily: "vazirmatn",
+            alignItems: "center",
+            overflow: "visible",
+            maxWidth: { xs: 50, sm: 50, md: 400, lg: 400 },
+          },
+        ]}
+        key={menu.id}
+      >
         <ListItemButton onClick={handleClick}>
-          <ListItemIcon>{<menu.icon />}</ListItemIcon>
-          <ListItemText primary={menu.title} />
-          {isOpen ? <ExpandLess /> : <ExpandMore />}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            {menu?.icon && <ListItemIcon>{<menu.icon />}</ListItemIcon>}
+            <ListItemText
+              sx={{
+                display: { xs: "none", sm: "none", md: "block", lg: "block" },
+                "&:hover": {
+                  display: "block",
+                },
+              }}
+              primary={menu.title}
+            />
+          </Box>
+          {isOpen ? (
+            <ExpandLess
+              sx={[
+                {
+                  display: { xs: "none", sm: "none", md: "block", lg: "block" },
+                },
+              ]}
+            />
+          ) : (
+            <ExpandMore
+              sx={[
+                {
+                  display: {
+                    xs: "none",
+                    sm: "none",
+                    md: "block",
+                    lg: "block",
+                  },
+                },
+              ]}
+            />
+          )}
         </ListItemButton>
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <List sx={{ pl: 2 }}>
@@ -111,20 +99,46 @@ const RecursiveMenuItem = ({
                 menu={child}
                 openMenus={openMenus}
                 toggleMenu={toggleMenu}
-                parentId={menu.id} // Pass the current menu ID as the parent ID for children
+                parentId={menu.id}
+                path={path}
               />
             ))}
           </List>
         </Collapse>
-      </React.Fragment>
+      </Box>
     );
   }
 
   if (menu.type === "item") {
     return (
-      <ListItemButton key={menu.id} sx={{ pl: 2 }}>
-        <ListItemIcon>{<menu.icon />}</ListItemIcon>
-        <ListItemText primary={menu.title} />
+      <ListItemButton
+        component={Link}
+        href={menu.id}
+        sx={[
+          menu?.id == path && { backgroundColor: "#f0f0f0" },
+          {
+            display: "flex",
+            flexDirection: "row",
+            maxWidth: { xs: 50, sm: 50, md: 400, lg: 400 },
+          },
+        ]}
+        key={menu.id}
+      >
+        {menu?.icon && <ListItemIcon>{<menu.icon />}</ListItemIcon>}
+        <ListItemText
+          sx={[
+            {
+              flex: 1,
+            },
+            {
+              display: { xs: "none", sm: "none", md: "block", lg: "block" },
+              "&:hover": {
+                display: { xs: "block", sm: "block", md: "block", lg: "block" },
+              },
+            },
+          ]}
+          primary={menu.title}
+        />
       </ListItemButton>
     );
   }
@@ -132,7 +146,8 @@ const RecursiveMenuItem = ({
   return null;
 };
 
-const SidebarMenu = ({ menuList }: { menuList: any }) => {
+const SideCollapsingMenu = ({ menuList }: { menuList: any }) => {
+  const path = usePathname();
   const [openMenus, setOpenMenus] = useState<Record<string, string | null>>({
     root: null,
   });
@@ -140,12 +155,19 @@ const SidebarMenu = ({ menuList }: { menuList: any }) => {
   const toggleMenu = (parentId: string | null, id: string) => {
     setOpenMenus((prev) => ({
       ...prev,
-      [parentId || "root"]: prev[parentId || "root"] === id ? null : id, // Toggle the current menu
+      [parentId || "root"]: prev[parentId || "root"] === id ? null : id,
     }));
   };
 
   return (
-    <List>
+    <List
+      sx={{
+        position: "fixed",
+        borderRight: "1px solid #ccc",
+        height: "100%",
+        backgroundColor: "#f7f7f7",
+      }}
+    >
       {menuList.map((menu: any) => (
         <RecursiveMenuItem
           key={menu.id}
@@ -153,10 +175,11 @@ const SidebarMenu = ({ menuList }: { menuList: any }) => {
           openMenus={openMenus}
           toggleMenu={toggleMenu}
           parentId={null} // Top-level menus have no parent
+          path={path}
         />
       ))}
     </List>
   );
 };
 
-export { SidebarMenu };
+export default SideCollapsingMenu;
