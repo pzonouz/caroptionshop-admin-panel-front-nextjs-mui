@@ -1,9 +1,9 @@
 import CartIcon from "@mui/icons-material/ShoppingCart";
-import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import TvIcon from "@mui/icons-material/Tv";
 import SettingsIcon from "@mui/icons-material/Settings";
 import UserIcon from "@mui/icons-material/Person";
+import CategoryIcon from "@mui/icons-material/Category";
 
 const menuList = [
   {
@@ -36,6 +36,27 @@ const menuList = [
     title: "مدیریت کاربران",
     type: "item",
     icon: UserIcon,
+  },
+  {
+    id: "products-categories",
+    title: "محصولات فروشگاه",
+    type: "group",
+    icon: CartIcon,
+    children: [
+      {
+        id: "categories",
+        title: "دسته بندی",
+        type: "group",
+        icon: CategoryIcon,
+        children: [
+          {
+            id: "categories/create",
+            title: "دسته بندی جدید",
+            type: "item",
+          },
+        ],
+      },
+    ],
   },
 ];
 export type MenuListType = typeof menuList;

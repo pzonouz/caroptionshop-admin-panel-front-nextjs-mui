@@ -1,10 +1,10 @@
 import "./globals.css";
 import { CssBaseline } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { CacheRtl } from "@/components/Utils/CacheRtl";
-import { ThemeProviderWrapper } from "@/components/Utils/ThemeProviderWrapper";
 import { Vazirmatn } from "next/font/google";
-import Appbar from "@/components/Navigation/AppBar";
+import { ThemeProviderWrapper } from "./components/Utils/ThemeProviderWrapper";
+import { CacheRtl } from "./components/Utils/CacheRtl";
+import Appbar from "./components/Navigation/AppBar";
 
 const vazirmatn = Vazirmatn({
   weight: ["300", "400", "500", "700", "800"],

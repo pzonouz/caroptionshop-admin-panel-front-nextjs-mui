@@ -11,7 +11,7 @@ import {
   Collapse,
   Box,
 } from "@mui/material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, Widgets } from "@mui/icons-material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -21,12 +21,14 @@ const RecursiveMenuItem = ({
   toggleMenu,
   parentId,
   path,
+  closeFunction,
 }: {
   menu: any;
   openMenus: Record<string, string | null>;
   toggleMenu: (parentId: string | null, id: string) => void;
   parentId: string | null;
   path: string | null;
+  closeFunction: Function;
 }) => {
   if (!menu) return null;
 
@@ -43,56 +45,43 @@ const RecursiveMenuItem = ({
           {
             fontFamily: "vazirmatn",
             alignItems: "center",
-            overflow: "visible",
-            maxWidth: { xs: 50, sm: 50, md: 400, lg: 400 },
           },
         ]}
         key={menu.id}
       >
-        <ListItemButton onClick={handleClick}>
+        <ListItemButton
+          sx={{ display: "flex", justifyContent: "space-between", gap: "2rem" }}
+          onClick={handleClick}
+        >
           <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
+            sx={[
+              {
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                textAlign: "right",
+              },
+            ]}
           >
-            {menu?.icon && <ListItemIcon>{<menu.icon />}</ListItemIcon>}
+            {menu?.icon && (
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  width: "2rem",
+                }}
+              >
+                {<menu.icon />}
+              </ListItemIcon>
+            )}
             <ListItemText
-              sx={{
-                display: { xs: "none", sm: "none", md: "block", lg: "block" },
-                "&:hover": {
-                  display: "block",
-                },
-              }}
               primary={menu.title}
+              sx={{ textAlign: "right", flex: 1 }}
             />
           </Box>
-          {isOpen ? (
-            <ExpandLess
-              sx={[
-                {
-                  display: { xs: "none", sm: "none", md: "block", lg: "block" },
-                },
-              ]}
-            />
-          ) : (
-            <ExpandMore
-              sx={[
-                {
-                  display: {
-                    xs: "none",
-                    sm: "none",
-                    md: "block",
-                    lg: "block",
-                  },
-                },
-              ]}
-            />
-          )}
+          {isOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
-          <List sx={{ pl: 2 }}>
+          <List sx={{ paddingX: "1rem" }}>
             {menu.children?.map((child: any) => (
               <RecursiveMenuItem
                 key={child.id}
@@ -101,6 +90,7 @@ const RecursiveMenuItem = ({
                 toggleMenu={toggleMenu}
                 parentId={menu.id}
                 path={path}
+                closeFunction={closeFunction}
               />
             ))}
           </List>
@@ -112,29 +102,26 @@ const RecursiveMenuItem = ({
   if (menu.type === "item") {
     return (
       <ListItemButton
+        onClick={() => closeFunction()}
         component={Link}
-        href={menu.id}
-        sx={[
-          menu?.id == path && { backgroundColor: "#f0f0f0" },
-          {
-            display: "flex",
-            flexDirection: "row",
-            maxWidth: { xs: 50, sm: 50, md: 400, lg: 400 },
-          },
-        ]}
+        href={`/${menu.id}`}
+        sx={[menu?.id == path && { backgroundColor: "#f0f0f0" }]}
         key={menu.id}
       >
-        {menu?.icon && <ListItemIcon>{<menu.icon />}</ListItemIcon>}
+        {menu?.icon && (
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              width: "2rem",
+            }}
+          >
+            {<menu.icon />}
+          </ListItemIcon>
+        )}
         <ListItemText
           sx={[
             {
               flex: 1,
-            },
-            {
-              display: { xs: "none", sm: "none", md: "block", lg: "block" },
-              "&:hover": {
-                display: { xs: "block", sm: "block", md: "block", lg: "block" },
-              },
             },
           ]}
           primary={menu.title}
@@ -146,7 +133,13 @@ const RecursiveMenuItem = ({
   return null;
 };
 
-const SideCollapsingMenu = ({ menuList }: { menuList: any }) => {
+const SideCollapsingMenu = ({
+  menuList,
+  closeFunction,
+}: {
+  menuList: any;
+  closeFunction: Function;
+}) => {
   const path = usePathname();
   const [openMenus, setOpenMenus] = useState<Record<string, string | null>>({
     root: null,
@@ -176,6 +169,7 @@ const SideCollapsingMenu = ({ menuList }: { menuList: any }) => {
           toggleMenu={toggleMenu}
           parentId={null} // Top-level menus have no parent
           path={path}
+          closeFunction={closeFunction}
         />
       ))}
     </List>

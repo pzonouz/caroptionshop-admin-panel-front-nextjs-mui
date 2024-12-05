@@ -16,8 +16,8 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import SideCollapsingMenu from "@/components/Utils/SidebarMenu";
 import { menuList } from "@/menu";
+import SideCollapsingMenu from "../Utils/SidebarMenu";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -171,7 +171,13 @@ export default function Appbar({ children }: { children: React.ReactNode }) {
             edge="start"
             color="inherit"
             sx={{ mr: 2 }}
-            onClick={(e) => handleMainMenuOpen(e)}
+            onClick={(e: React.MouseEvent<HTMLElement>) => {
+              if (mainMenuAnchorEl) {
+                setMainMenuAnchorEl(null);
+                return;
+              }
+              handleMainMenuOpen(e);
+            }}
           >
             <MenuIcon />
           </IconButton>
@@ -238,7 +244,12 @@ export default function Appbar({ children }: { children: React.ReactNode }) {
       {renderMobileMenu}
       {renderMenu}
       <Box sx={{ display: "flex", flexDirection: "row" }}>
-        {mainMenuAnchorEl && <SideCollapsingMenu menuList={menuList} />}
+        {mainMenuAnchorEl && (
+          <SideCollapsingMenu
+            menuList={menuList}
+            closeFunction={handleMainMenuClose}
+          />
+        )}
         {children}
       </Box>
     </Box>
