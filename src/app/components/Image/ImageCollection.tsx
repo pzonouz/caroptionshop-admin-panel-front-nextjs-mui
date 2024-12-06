@@ -1,8 +1,9 @@
 import { Box, Grid2 } from "@mui/material";
 import { ImageElement } from "./ImageElement";
 import { useState } from "react";
+import { FileType } from "@/app/actions/files.action";
 
-const ImageCollection = ({ images }) => {
+const ImageCollection = ({ images }: { images: FileType[] }) => {
   const [select, setSelect] = useState("");
   return (
     <Box
@@ -14,16 +15,6 @@ const ImageCollection = ({ images }) => {
         overflowY: "auto",
       }}
     >
-      {/* <Grid2 */}
-      {/*   container */}
-      {/*   sx={{ */}
-      {/*     width: "95%", */}
-      {/*     maxHeight: "80vh", */}
-      {/*     marginX: "auto", */}
-      {/*     overflow: "hidden", */}
-      {/*     overflowY: "auto", */}
-      {/*   }} */}
-      {/* > */}
       {images?.map((image: any) => (
         <ImageElement
           select={select}
@@ -32,7 +23,6 @@ const ImageCollection = ({ images }) => {
           image={image}
         />
       ))}
-      {/* </Grid2> */}
     </Box>
   );
 };

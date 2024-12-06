@@ -5,6 +5,7 @@ import { Vazirmatn } from "next/font/google";
 import { ThemeProviderWrapper } from "./components/Utils/ThemeProviderWrapper";
 import { CacheRtl } from "./components/Utils/CacheRtl";
 import Appbar from "./components/Navigation/AppBar";
+import { ReduxProviderWrapper } from "@/redux-toolkit/ReduxProviderWrapper";
 
 const vazirmatn = Vazirmatn({
   weight: ["300", "400", "500", "700", "800"],
@@ -28,7 +29,9 @@ export default function RootLayout({
           <ThemeProviderWrapper>
             <CacheRtl>
               <CssBaseline enableColorScheme />
-              <Appbar>{children}</Appbar>
+              <ReduxProviderWrapper>
+                <Appbar>{children}</Appbar>
+              </ReduxProviderWrapper>
             </CacheRtl>
           </ThemeProviderWrapper>
         </AppRouterCacheProvider>

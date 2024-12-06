@@ -1,7 +1,5 @@
 "use client";
 
-// WARN:ChatGpt
-// Add Font and customise menu looks
 import React, { useState } from "react";
 import {
   List,

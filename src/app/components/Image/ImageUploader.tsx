@@ -15,15 +15,9 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { useActionState, useEffect, useRef, useState } from "react";
-import { UploadAction } from "@/app/actions/upload.action";
+import { UploadAction } from "@/app/actions/files.action";
 
-const ImageUploader = ({
-  open,
-  setOpen,
-}: {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}) => {
+const ImageUploader = () => {
   const [snackBar, setSnackBar] = useState({
     open: false,
     severity: "error",

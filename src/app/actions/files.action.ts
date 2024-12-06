@@ -19,14 +19,20 @@ const DeleteFileAction = async (
   _prevState: any,
   formData: FormData,
 ) => {
-  const res = await fetch(`${process.env.BACKEND_URL}/files/${id}`, {
-    method: "POST",
-    body: formData,
+  const res = await fetch(`${process.env.BACKEND_URL}/files/${id}/`, {
+    method: "DELETE",
   });
   if (!res?.ok) {
     return { error: await res.json() };
   }
   revalidateTag("files");
   return { success: true };
+};
+
+export type FileType = {
+  id: string;
+  title: string;
+  file: string;
+  uuid: string;
 };
 export { UploadAction, DeleteFileAction };

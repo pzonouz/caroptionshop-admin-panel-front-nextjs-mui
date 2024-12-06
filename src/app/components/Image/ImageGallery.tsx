@@ -2,18 +2,10 @@ import { Box } from "@mui/material";
 import { ImageUploader } from "./ImageUploader";
 import { ImageCollection } from "./ImageCollection";
 
-const ImageGallery = ({
-  images,
-  open,
-  setOpen,
-}: {
-  images: any;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}) => {
+const ImageGallery = ({ images }: { images: any }) => {
   return (
     <Box>
-      <ImageUploader open={open} setOpen={setOpen} />
+      <ImageUploader />
       <ImageCollection images={images} />
     </Box>
   );
