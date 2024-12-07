@@ -9,7 +9,7 @@ import {
   Collapse,
   Box,
 } from "@mui/material";
-import { ExpandLess, ExpandMore, Widgets } from "@mui/icons-material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -153,6 +153,7 @@ const SideCollapsingMenu = ({
   return (
     <List
       sx={{
+        zIndex: 5,
         position: "fixed",
         borderRight: "1px solid #ccc",
         height: "100%",

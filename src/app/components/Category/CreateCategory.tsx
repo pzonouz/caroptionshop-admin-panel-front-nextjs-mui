@@ -10,6 +10,7 @@ import {
   Fade,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   IconButton,
   InputLabel,
   Modal,
@@ -49,14 +50,13 @@ const CreateCategory = ({
   );
   const [text, setText] = useState("");
   const [status, setStatus] = useState(true);
+  const [parent, setParent] = useState("0");
   const dispatch = useDispatch();
   const [state, action, loading] = useActionState(
-    CreateCategoryAction.bind(null, text, status, image),
+    CreateCategoryAction.bind(null, parent, text, status, image),
     null,
   );
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
+  useEffect(() => {}, [state]);
   return (
     <>
       <Modal
@@ -94,6 +94,7 @@ const CreateCategory = ({
         <Typography variant="h5">ایجاد دسته بندی جدید</Typography>
         <TextField
           name="title"
+          defaultValue={state?.data?.title}
           variant="filled"
           label="عنوان"
           helperText={state?.error?.fieldErrors["title"]}
@@ -102,17 +103,19 @@ const CreateCategory = ({
         <FormControl fullWidth>
           <InputLabel>دسته بندی</InputLabel>
           <NativeSelect
-            name="parent"
-            defaultValue={0}
+            value={parent}
+            onChange={(e) => {
+              setParent(e.target.value);
+            }}
             label="دسته بندی"
             variant="filled"
           >
-            <option style={{ fontFamily: "VazirMatn" }} value={0}>
+            <option key={0} style={{ fontFamily: "VazirMatn" }} value={0}>
               بخش اصلی
             </option>
             <RecursiveSelectOptions
               textField="title"
-              valueField="uuid"
+              valueField="title"
               keyField="uuid"
               items={categories}
             />
@@ -153,6 +156,7 @@ const CreateCategory = ({
         ) : (
           <Button
             component="label"
+            color={state?.error?.fieldErrors?.image ? "error" : "primary"}
             role={undefined}
             variant="contained"
             tabIndex={-1}
@@ -163,6 +167,11 @@ const CreateCategory = ({
           >
             انتخاب تصویر
           </Button>
+        )}
+        {state?.error?.fieldErrors?.image && (
+          <FormHelperText error>
+            {state?.error?.fieldErrors?.image}
+          </FormHelperText>
         )}
         <Typography component={"p"}>توضیحات</Typography>
         <Tiptap text={text} setText={setText} />
@@ -177,6 +186,10 @@ const CreateCategory = ({
             />
           }
         />
+        <FormHelperText error>
+          {(state?.error?.formErrors as Array<string>)?.length > 0 &&
+            JSON.stringify(state?.error?.formErrors)}
+        </FormHelperText>
         <LoadingButton type="submit" variant="contained" loading={loading}>
           ثبت
         </LoadingButton>

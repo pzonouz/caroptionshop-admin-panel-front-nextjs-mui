@@ -1,4 +1,3 @@
-import "./tiptap.module.css";
 import { Box, Button, ButtonGroup, IconButton } from "@mui/material";
 import BulletList from "@tiptap/extension-bullet-list";
 import Document from "@tiptap/extension-document";
@@ -19,6 +18,11 @@ import Bold from "@tiptap/extension-bold";
 
 export default ({ text, setText }: { text: string; setText: Function }) => {
   const editor = useEditor({
+    editorProps: {
+      attributes: {
+        style: "outline: none; box-shadow: none;",
+      },
+    },
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
       setText(editor?.getHTML());

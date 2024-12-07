@@ -54,6 +54,11 @@ const menuList = [
             title: "دسته بندی جدید",
             type: "item",
           },
+          {
+            id: "categories",
+            title: "لیست دسته بندی ها",
+            type: "item",
+          },
         ],
       },
     ],
