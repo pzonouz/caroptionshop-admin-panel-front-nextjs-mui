@@ -6,11 +6,13 @@ import { FileType } from "./files.action";
 import { redirect } from "next/navigation";
 
 const categorySchema = z.object({
+  id: z.string().nullish(),
   title: z.string().min(1, { message: "لطفا عنوان را وارد کنید" }),
   description: z.string().nullish(),
   parent: z.string().nullish(),
   status: z.boolean().default(true),
   image: z.string().min(1, { message: "لطفا عکس را انتخاب کنید" }),
+  children: z.array(z.any()).nullish(),
 });
 
 export type CategoryType = z.infer<typeof categorySchema>;
@@ -48,7 +50,7 @@ const CreateCategoryAction = async (
     const err = { fieldErrors: {}, formErrors: formError };
     return { error: err, data: validatedData?.data };
   }
-  revalidateTag("categories");
+  revalidateTag("category");
   redirect("/categories");
 };
 
