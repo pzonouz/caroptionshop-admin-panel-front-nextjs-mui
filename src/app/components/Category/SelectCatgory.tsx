@@ -9,22 +9,25 @@ const SelectCategory = ({
   setSelectedCategory,
 }: {
   categories: CategoryType[];
-  selectedCategory: CategoryType;
+  selectedCategory: CategoryType | number;
   setSelectedCategory: any;
 }) => {
   return (
     <FormControl sx={{ minWidth: "80%", marginX: "auto", marginTop: "3rem" }}>
       <InputLabel>Category</InputLabel>
       <Select
-        value={selectedCategory}
+        value={selectedCategory || 0}
         onChange={(e) => {
           setSelectedCategory(e?.target?.value);
         }}
         label="Category"
       >
+        <MenuItem key={0} value={0}>
+          بخش اصلی
+        </MenuItem>
         {categories.map((category) => {
           return (
-            <MenuItem key={category.title} value={category}>
+            <MenuItem key={category?.title} value={category}>
               {category.title}
             </MenuItem>
           );

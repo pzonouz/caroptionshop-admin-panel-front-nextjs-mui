@@ -1,7 +1,9 @@
 "use client";
 import { CategoryType } from "@/app/actions/categories.action";
+import AddIcon from "@mui/icons-material/Add";
 import {
   Checkbox,
+  Fab,
   IconButton,
   Paper,
   Table,
@@ -15,9 +17,23 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { SelectCategory } from "./SelectCatgory";
 import { useEffect, useState } from "react";
+import { ModalComponenet } from "../Utils/ModalComponent";
+import { CreateCategory } from "./CreateCategory";
+import { FileType } from "@/app/actions/files.action";
+import { UpdateCategory } from "./UpdateCategory";
+import { DeleteCategory } from "./DeleteCategory";
 
-const ListCategories = ({ categories }: { categories: CategoryType[] }) => {
+const ListCategories = ({
+  categories,
+  images,
+}: {
+  categories: CategoryType[];
+  images: FileType[];
+}) => {
   const parentCategories: any[] = [];
+  const [createCategoryOpen, setCreateCategoryOpen] = useState(false);
+  const [updateCategory, setUpdateCategory] = useState(null);
+  const [deleteCategory, setDeleteCategory] = useState(null);
   const getparentCategories = (categories: CategoryType[], temp: any[]) => {
     categories.forEach((category) => {
       if (category?.children?.length! > 0) {
@@ -29,15 +45,22 @@ const ListCategories = ({ categories }: { categories: CategoryType[] }) => {
   };
   getparentCategories(categories, parentCategories);
 
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>(
-    categories[0],
-  );
+  const [selectedCategory, setSelectedCategory] = useState<
+    CategoryType | number
+  >(0);
 
   const [filteredCategories, setFilteredCategories] = useState(categories);
 
   useEffect(() => {
-    setFilteredCategories(selectedCategory?.children!);
-  }, [selectedCategory]);
+    if (selectedCategory) {
+      setFilteredCategories((selectedCategory as CategoryType)?.children || []);
+    } else {
+      setFilteredCategories(
+        categories.filter((category) => category.parent === null),
+      );
+    }
+  }, [selectedCategory, categories]);
+
   return (
     <div
       style={{
@@ -47,6 +70,33 @@ const ListCategories = ({ categories }: { categories: CategoryType[] }) => {
         gap: "2rem",
       }}
     >
+      <Fab
+        onClick={() => setCreateCategoryOpen(true)}
+        color="primary"
+        sx={{ position: "fixed", left: "1rem", bottom: "1rem" }}
+      >
+        <AddIcon />
+      </Fab>
+      <ModalComponenet
+        open={createCategoryOpen}
+        setOpen={setCreateCategoryOpen}
+      >
+        <CreateCategory categories={categories} images={images} />
+      </ModalComponenet>
+      <ModalComponenet open={updateCategory} setOpen={setUpdateCategory}>
+        <UpdateCategory
+          categories={categories}
+          images={images}
+          category={updateCategory!}
+        />
+      </ModalComponenet>
+      <ModalComponenet open={deleteCategory} setOpen={setDeleteCategory}>
+        <DeleteCategory
+          category={deleteCategory!}
+          setOpen={setDeleteCategory}
+        />
+      </ModalComponenet>
+
       <SelectCategory
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
@@ -58,7 +108,6 @@ const ListCategories = ({ categories }: { categories: CategoryType[] }) => {
             <TableRow>
               <TableCell align="left">انتخاب</TableCell>
               <TableCell align="left">عنوان</TableCell>
-              <TableCell align="left">دسته بندی</TableCell>
               <TableCell align="center">عملیات</TableCell>
             </TableRow>
           </TableHead>
@@ -72,14 +121,15 @@ const ListCategories = ({ categories }: { categories: CategoryType[] }) => {
                   <Checkbox />
                 </TableCell>
                 <TableCell align="left">{row.title}</TableCell>
-                <TableCell align="left">
-                  {row.parent == null ? "بدون دسته بندی" : row.parent}
-                </TableCell>
                 <TableCell align="center">
-                  <IconButton>
+                  <IconButton
+                    onClick={() => {
+                      setUpdateCategory(row);
+                    }}
+                  >
                     <EditIcon color="primary" />
                   </IconButton>
-                  <IconButton>
+                  <IconButton onClick={() => setDeleteCategory(row)}>
                     <DeleteIcon color="error" />
                   </IconButton>
                 </TableCell>

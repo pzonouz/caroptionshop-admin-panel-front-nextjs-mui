@@ -45,19 +45,10 @@ const ImageElement = ({
         style={{ display: "block" }}
         width={100}
         height={100}
-        src={image?.file}
+        src={image?.file || "/images/placeholder.jpg"}
         alt="image"
       />
-      <Typography
-        sx={{ textAlign: "right" }}
-        // sx={{
-        //   whiteSpace: "nowrap",
-        //   overflow: "hidden",
-        //   textOverflow: "ellipsis",
-        // }}
-      >
-        {image?.title}
-      </Typography>
+      <Typography sx={{ textAlign: "right" }}>{image?.title}</Typography>
       {select === image?.title && (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <IconButton

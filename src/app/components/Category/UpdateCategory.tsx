@@ -23,7 +23,7 @@ import Button from "@mui/material/Button";
 import ImageIcon from "@mui/icons-material/Image";
 import {
   CategoryType,
-  CreateCategoryAction,
+  UpdateCategoryAction,
 } from "@/app/actions/categories.action";
 import { FileType } from "@/app/actions/files.action";
 import { RootState } from "@/redux-toolkit/Store";
@@ -38,23 +38,36 @@ import {
 } from "../../../redux-toolkit/ImageGallerySlice";
 import { redirect } from "next/navigation";
 
-const CreateCategory = ({
+const UpdateCategory = ({
   categories,
   images,
+  category,
 }: {
   categories: CategoryType[];
   images: FileType[];
+  category: CategoryType;
 }) => {
+  const dispatch = useDispatch();
+  const currentImage = images?.filter(
+    (image) => image?.uuid == category?.image,
+  )[0];
+  dispatch(setImage(currentImage));
+  const [text, setText] = useState(category?.description!);
+  const [status, setStatus] = useState(category?.status);
+  const [parent, setParent] = useState(category?.parent ? category?.parent : 0);
   const image = useSelector((state: RootState) => state.ImageGallery.image);
   const galleryOpen = useSelector(
     (state: RootState) => state.ImageGallery.open,
   );
-  const [text, setText] = useState("");
-  const [status, setStatus] = useState(true);
-  const [parent, setParent] = useState("0");
-  const dispatch = useDispatch();
   const [state, action, loading] = useActionState(
-    CreateCategoryAction.bind(null, parent, text, status, image),
+    UpdateCategoryAction.bind(
+      null,
+      category?.uuid!,
+      parent,
+      text,
+      status,
+      image,
+    ),
     null,
   );
   useEffect(() => {
@@ -97,10 +110,10 @@ const CreateCategory = ({
           padding: "1rem",
         }}
       >
-        <Typography variant="h5">ایجاد دسته بندی جدید</Typography>
+        <Typography variant="h5">ویرایش دسته بندی</Typography>
         <TextField
           name="title"
-          defaultValue={state?.data?.title}
+          defaultValue={state?.data?.title || category?.title}
           variant="filled"
           label="عنوان"
           helperText={state?.error?.fieldErrors["title"]}
@@ -126,7 +139,6 @@ const CreateCategory = ({
               items={categories}
             />
           </NativeSelect>
-          {/* </Select> */}
         </FormControl>
         {image ? (
           <Box sx={{ position: "relative" }}>
@@ -180,7 +192,7 @@ const CreateCategory = ({
           </FormHelperText>
         )}
         <Typography component={"p"}>توضیحات</Typography>
-        <Tiptap text={text} setText={setText} />
+        <Tiptap text={state?.data?.description || text} setText={setText} />
         <FormControlLabel
           sx={{ width: "100%", textAlign: "left" }}
           dir="rtl"
@@ -203,4 +215,4 @@ const CreateCategory = ({
     </>
   );
 };
-export { CreateCategory };
+export { UpdateCategory };

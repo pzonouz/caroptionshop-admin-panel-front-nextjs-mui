@@ -69,16 +69,13 @@ export default ({ text, setText }: { text: string; setText: Function }) => {
       <Box
         sx={{
           display: "flex",
+          flexWrap: "wrap",
           flexDirection: "row",
           alignItems: "center",
           gap: "1rem",
+          fontSize: "0.7rem",
         }}
       >
-        {/* <IconButton */}
-        {/*   onClick={() => editor.chain().focus().toggleBulletList().run()} */}
-        {/* > */}
-        {/*   <FontAwesomeIcon icon={faListAlt} /> */}
-        {/* </IconButton> */}
         <input
           style={{ width: "2rem", height: "2rem" }}
           type="color"
@@ -93,7 +90,7 @@ export default ({ text, setText }: { text: string; setText: Function }) => {
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
-            sx={{ color: "gray", borderColor: "gray" }}
+            sx={{ color: "gray", borderColor: "gray", fontSize: "inherit" }}
           >
             H1
           </Button>
@@ -101,7 +98,7 @@ export default ({ text, setText }: { text: string; setText: Function }) => {
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
-            sx={{ color: "gray", borderColor: "gray" }}
+            sx={{ color: "gray", borderColor: "gray", fontSize: "inherit" }}
           >
             H2
           </Button>
@@ -109,16 +106,26 @@ export default ({ text, setText }: { text: string; setText: Function }) => {
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
-            sx={{ color: "gray", borderColor: "gray" }}
+            sx={{ color: "gray", borderColor: "gray", fontSize: "inherit" }}
           >
             H3
+          </Button>
+          <Button
+            onClick={() => editor.chain().focus().setParagraph().run()}
+            sx={{ color: "gray", borderColor: "gray", fontSize: "inherit" }}
+          >
+            P
           </Button>
         </ButtonGroup>
         <ButtonGroup>
           <Button
-            sx={{ color: "gray", borderColor: "gray", fontWeight: 900 }}
+            sx={{
+              color: "gray",
+              borderColor: "gray",
+              fontWeight: 900,
+              fontSize: "inherit",
+            }}
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive("bold") ? "is-active" : ""}
           >
             B
           </Button>
@@ -127,6 +134,7 @@ export default ({ text, setText }: { text: string; setText: Function }) => {
               color: "gray",
               borderColor: "gray",
               textDecoration: "line-through",
+              fontSize: "inherit",
             }}
             onClick={() => editor.chain().focus().toggleStrike().run()}
           >
@@ -137,6 +145,7 @@ export default ({ text, setText }: { text: string; setText: Function }) => {
               color: "gray",
               borderColor: "gray",
               fontStyle: "italic",
+              fontSize: "inherit",
             }}
             onClick={() => editor.chain().focus().toggleItalic().run()}
           >

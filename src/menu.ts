@@ -46,20 +46,20 @@ const menuList = [
       {
         id: "categories",
         title: "دسته بندی",
-        type: "group",
+        type: "item",
         icon: CategoryIcon,
-        children: [
-          {
-            id: "categories/create",
-            title: "دسته بندی جدید",
-            type: "item",
-          },
-          {
-            id: "categories",
-            title: "لیست دسته بندی ها",
-            type: "item",
-          },
-        ],
+        // children: [
+        //   {
+        //     id: "categories/create",
+        //     title: "دسته بندی جدید",
+        //     type: "item",
+        //   },
+        //   {
+        //     id: "categories",
+        //     title: "لیست دسته بندی ها",
+        //     type: "item",
+        //   },
+        // ],
       },
     ],
   },
