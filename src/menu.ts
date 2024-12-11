@@ -4,6 +4,7 @@ import TvIcon from "@mui/icons-material/Tv";
 import SettingsIcon from "@mui/icons-material/Settings";
 import UserIcon from "@mui/icons-material/Person";
 import CategoryIcon from "@mui/icons-material/Category";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 const menuList = [
   {
@@ -48,18 +49,12 @@ const menuList = [
         title: "دسته بندی",
         type: "item",
         icon: CategoryIcon,
-        // children: [
-        //   {
-        //     id: "categories/create",
-        //     title: "دسته بندی جدید",
-        //     type: "item",
-        //   },
-        //   {
-        //     id: "categories",
-        //     title: "لیست دسته بندی ها",
-        //     type: "item",
-        //   },
-        // ],
+      },
+      {
+        id: "products",
+        title: "محصولات",
+        type: "item",
+        icon: ShoppingBasketIcon,
       },
     ],
   },

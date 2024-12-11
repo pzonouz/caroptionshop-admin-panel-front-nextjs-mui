@@ -16,8 +16,11 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { UploadAction } from "@/app/actions/files.action";
+import { useDispatch } from "react-redux";
+import { setGalleryOpenState } from "@/redux-toolkit/ImageGallerySlice";
 
 const ImageUploader = () => {
+  const dispatch = useDispatch();
   const [snackBar, setSnackBar] = useState({
     open: false,
     severity: "error",
@@ -198,7 +201,10 @@ const ImageUploader = () => {
               />
             </IconButton>
             <IconButton size="small" sx={{ color: "black" }}>
-              <CloseIcon onClick={() => setOpen(false)} fontSize="small" />
+              <CloseIcon
+                onClick={() => dispatch(setGalleryOpenState(false))}
+                fontSize="small"
+              />
             </IconButton>
           </Box>
         </Box>

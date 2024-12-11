@@ -48,7 +48,11 @@ const RecursiveMenuItem = ({
         key={menu.id}
       >
         <ListItemButton
-          sx={{ display: "flex", justifyContent: "space-between", gap: "2rem" }}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "2rem",
+          }}
           onClick={handleClick}
         >
           <Box
@@ -79,7 +83,7 @@ const RecursiveMenuItem = ({
           {isOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
-          <List sx={{ paddingX: "1rem" }}>
+          <List sx={{}}>
             {menu.children?.map((child: any) => (
               <RecursiveMenuItem
                 key={child.id}
